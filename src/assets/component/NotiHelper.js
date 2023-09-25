@@ -17,7 +17,7 @@ export async function requestUserPermission() {
 
 const getFCMToken = async () => {
     let fcmToken = await AsyncStorage.getItem("fcmToken")
-    console.log(fcmToken, "oldtoken");
+    // console.log(fcmToken, "oldtoken");
 
     if (!fcmToken) {
         try {
@@ -76,8 +76,8 @@ export async function onDisplayNotification(data) {
     });
     // Display a notification
     await notifee.displayNotification({
-        title: data.notification && data.notification.title ? data.notification.title : "tiêu đề",
-        body: data.notification && data.notification.body ? data.notification.body : "body",
+        title: data.title && data.title ? data.title : "tiêu đề",
+        body: data.body && data.body ? data.body : "body",
         android: {
             channelId,
             importance: AndroidImportance.HIGH,
@@ -94,15 +94,13 @@ export async function onDisplayNotification(data) {
                         id: 'ingore',
                     },
                 },
-
             ]
-
         },
     });
 
     notifee.onBackgroundEvent(async ({ type, detail }) => {
         const { notification, pressAction } = detail;
-        console.log(notification);
+
         // Check if the user pressed the "Mark as read" action
         if (type === EventType.ACTION_PRESS && pressAction.id === 'accept') {
             // Update external API

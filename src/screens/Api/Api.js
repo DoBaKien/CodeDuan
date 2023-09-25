@@ -1,17 +1,16 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
-import { Text, View, Button } from "react-native";
+import { Text, View } from "react-native";
 import React from 'react';
-import Geolocation from 'react-native-geolocation-service';
-
+import Geolocation from '@react-native-community/geolocation'
+const url = 'http://10.170.232.98:8000/'
 function Api() {
 
     const [location, setLocation] = useState("")
     const [countdown1, setCountDown1] = useState(60)
     useEffect(() => {
-        axios.get(`http://10.170.232.131:8000/Api/SangTaiChuyenLuoi/find?id=${1}`)
+        axios.get(`${url}Api/SangTaiChuyenLuoi/find?id=${2}`)
             .then(function (response) {
-
                 setLocation(response.data);
             })
             .catch(function (error) {
@@ -34,27 +33,19 @@ function Api() {
 
         const intervalId = setInterval(() => {
             console.log("qwe");
-            Geolocation.getCurrentPosition(
-                position => {
-                    axios.post(`http://10.170.232.131:8000/Api/SangTaiChuyenLuoi/update`, {
-                        CUSTOMER_ID: 1,
-                        LATITUDE: position.coords.latitude,
-                        LONGITUDE: position.coords.longitude
+            Geolocation.getCurrentPosition(position => {
+                axios.put(`${url}Api/SangTaiChuyenLuoi/update`, {
+                    CUSTOMER_ID: 2,
+                    LATITUDE: position.coords.latitude,
+                    LONGITUDE: position.coords.longitude
+                })
+                    .then(function (response) {
+                        setLocation(response.data);
                     })
-                        .then(function (response) {
-                            console.log("asd");
-                            setLocation(response.data);
-                        })
-                        .catch(function (error) {
-                            console.log(error);
-                        });
-                },
-                error => {
-                    console.error(error);
-                },
-                { enableHighAccuracy: true, timeout: 15000, maximumAge: 10000 }
-            );
-
+                    .catch(function (error) {
+                        console.log(error);
+                    });
+            });
         }, 60000);
 
         return () => {

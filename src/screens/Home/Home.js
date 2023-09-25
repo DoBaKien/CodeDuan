@@ -1,12 +1,21 @@
 import { Button, StyleSheet, View } from 'react-native';
 import React, { useEffect } from 'react';
 import { NotificationService, onDisplayNotification, requestUserPermission } from '../../assets/component/NotiHelper';
-export default function Home({ navigation }) {
+import { io } from 'socket.io-client';
 
+export default function Home({ navigation }) {
+    const socket = io.connect("http://10.170.232.98:3002/");
     useEffect(() => {
         requestUserPermission()
         NotificationService()
     }, [])
+
+    socket.emit("join_room", '1');
+    useEffect(() => {
+        socket.on("new-notification", (data) => {
+            onDisplayNotification(data)
+        });
+    }, [socket]);
     return (
         <View style={styles.container}>
             <Button
