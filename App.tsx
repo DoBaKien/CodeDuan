@@ -2,12 +2,13 @@ import {NavigationContainer} from '@react-navigation/native';
 import Map from './src/screens/Map/Map';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import DashBoard from './src/screens/DashBoard/DashBoard';
-
 import Home from './src/screens/Home/Home';
 import Supervision from './src/screens/Supervision/Supervision';
 import Assignment from './src/screens/Assignment/Assignment';
 import Api from './src/screens/Api/Api';
 import Test from './src/screens/Test/Test';
+import Header from './src/assets/component/Header';
+import RealmEx from './src/screens/Realm/Realm';
 
 const Stack = createNativeStackNavigator();
 
@@ -31,19 +32,19 @@ export default function App() {
           name="DashBoard"
           component={DashBoard}
           options={{
-            headerShown: false,
+            header: () => <Header></Header>,
           }}></Stack.Screen>
         <Stack.Screen
           name="Supervision"
           component={Supervision}
           options={{
-            headerShown: false,
+            header: () => <Header></Header>,
           }}></Stack.Screen>
         <Stack.Screen
           name="Assignment"
           component={Assignment}
           options={{
-            headerShown: false,
+            header: () => <Header></Header>,
           }}></Stack.Screen>
         <Stack.Screen
           name="Api"
@@ -52,8 +53,8 @@ export default function App() {
             headerShown: false,
           }}></Stack.Screen>
         <Stack.Screen
-          name="Test"
-          component={Test}
+          name="Realm"
+          component={RealmEx}
           options={{
             headerShown: false,
           }}></Stack.Screen>

@@ -1,57 +1,67 @@
 import { Pressable, Text, View, StyleSheet, TextInput, Image, TouchableOpacity, FlatList } from "react-native";
 import React, { useState } from 'react';
-import { launchCamera } from 'react-native-image-picker';
-
-function ModalDone(props) {
+import { ModalImg } from "./ModalImg";
 
 
-    const [imagesB, setImagesB] = useState([]);
-    const [imagesA, setImagesA] = useState([]);
 
-    const pickImageCam = async (id) => {
-        let result = await launchCamera({
-            allowsEditing: true,
-        });
-        if (!result.cancelled) {
-            if (id === "B") {
-                const newImages = [...imagesB, result.assets[0].uri];
-                setImagesB(newImages);
+function ModalDone() {
+    const [visible, setVisible] = useState(false);
+    const [type, setType] = useState("")
+    const [imagesT, setImagesT] = useState([]);
+    const [imagesS, setImagesS] = useState([]);
+    const [nguyenNhan, setNguyenNhan] = useState("")
+    const [xuLi, setXuLi] = useState("")
+    const [kQua, setKQua] = useState("")
+    const [ghiChu, setGhiChu] = useState("")
 
-            } else if (id === "A") {
-                const newImages = [...imagesA, result.assets[0].uri];
-                setImagesA(newImages);
 
-            }
-        }
-    };
+    const handleClick = () => {
+        console.log(nguyenNhan);
+    }
+
+
 
     return (
         <View style={styles.centeredView}>
+            <ModalImg
+                setVisible={setVisible}
+                visible={visible}
+                imagesT={imagesT}
+                imagesS={imagesS}
+                setImagesS={setImagesS}
+                setImagesT={setImagesT}
+                type={type} />
             <View style={styles.modalView}>
                 <TextInput
                     style={styles.input}
                     placeholder="Nhập nguyên nhân..."
+
+                    onChangeText={(value) => setNguyenNhan(value)}
                 />
                 <TextInput
                     style={styles.input}
                     placeholder="Nhập cách xử lý..."
+
+                    onChangeText={(value) => setXuLi(value)}
                 />
                 <TextInput
                     style={styles.input}
                     placeholder="Nhập kết quả xử lý..."
+
+                    onChangeText={(value) => setKQua(value)}
                 />
                 <View style={styles.viewImage}>
                     <View style={{ width: "40%" }}>
                         <View>
                             <FlatList
-                                data={imagesB}
-                                renderItem={({ item }) => <Image source={{ uri: item }} style={styles.image} />}
+                                data={imagesT}
+                                renderItem={({ item }) => <Image source={{ uri: item.uri }} style={styles.image} />}
                                 horizontal={true}
                             />
                         </View>
                         <TouchableOpacity
                             style={styles.button}
-                            onPress={() => pickImageCam("B")}
+                            onPress={() => { setVisible(true), setType("Truoc") }}
                         >
                             <Text style={styles.textStyle}>Hình ảnh trước</Text>
                         </TouchableOpacity>
@@ -60,14 +70,14 @@ function ModalDone(props) {
                     <View style={{ width: "40%" }}>
                         <View>
                             <FlatList
-                                data={imagesA}
-                                renderItem={({ item }) => <Image source={{ uri: item }} style={styles.image} />}
+                                data={imagesS}
+                                renderItem={({ item }) => <Image source={{ uri: item.uri }} style={styles.image} />}
                                 horizontal={true}
                             />
                         </View>
                         <TouchableOpacity
                             style={styles.button}
-                            onPress={() => pickImageCam("A")}
+                            onPress={() => { setVisible(true), setType("Sau") }}
                         >
                             <Text style={styles.textStyle}>Hình ảnh sau</Text>
                         </TouchableOpacity>
@@ -76,11 +86,14 @@ function ModalDone(props) {
                 </View>
                 <TextInput
                     style={styles.input}
-                    placeholder="Nhập kết quả xử lý..."
+                    placeholder="Nhập ghi chú sau khi sửa điện..."
+
+                    onChangeText={(value) => setGhiChu(value)}
                 />
                 <Pressable
                     style={styles.button}
-                    onPress={() => props.setModalVisible(!props.modalVisible)}>
+                    onPress={handleClick}
+                >
                     <Text style={styles.textStyle}>Hoàn thành sửa điện</Text>
                 </Pressable>
             </View>
@@ -93,7 +106,6 @@ const styles = StyleSheet.create({
 
     },
     modalView: {
-
         padding: 10,
         alignItems: 'center',
         width: "100%"

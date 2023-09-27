@@ -34,7 +34,7 @@ function Api() {
         const intervalId = setInterval(() => {
             console.log("qwe");
             Geolocation.getCurrentPosition(position => {
-                axios.put(`${url}Api/SangTaiChuyenLuoi/update`, {
+                axios.post(`${url}Api/SangTaiChuyenLuoi/update`, {
                     CUSTOMER_ID: 2,
                     LATITUDE: position.coords.latitude,
                     LONGITUDE: position.coords.longitude

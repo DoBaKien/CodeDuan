@@ -1,18 +1,32 @@
-import { Pressable, Text, View, StyleSheet, TextInput } from "react-native";
+import { useState } from "react";
+import { Pressable, Text, View, StyleSheet, TextInput, Dimensions } from "react-native";
+import { Keyboard } from 'react-native'
 
 
 function ModalCancel() {
+    const [ghiChu, setGhiChu] = useState('')
+
+    const handleClick = () => {
+
+        console.log(ghiChu);
+        Keyboard.dismiss()
+    }
+
     return (
         <View style={styles.centeredView}>
             <View style={styles.modalView}>
                 <TextInput
                     style={styles.input}
                     placeholder="Nhập ghi chú khi sửa điện.."
+                    onEndEditing={handleClick}
+                    onChangeText={(value) => setGhiChu(value)}
                 />
 
                 <Pressable
                     style={styles.button}
-                    onPress={() => props.setModalVisible(!props.modalVisible)}>
+                    onPress={handleClick}
+                    keyboardShouldPersistTaps='handled'
+                >
                     <Text style={styles.textStyle}>Hủy yêu cầu</Text>
                 </Pressable>
             </View>
@@ -22,11 +36,9 @@ function ModalCancel() {
 }
 const styles = StyleSheet.create({
     centeredView: {
-
         alignItems: 'center'
     },
     modalView: {
-
         padding: 10,
         alignItems: 'center',
         width: "100%"

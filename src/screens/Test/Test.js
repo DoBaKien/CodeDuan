@@ -1,118 +1,169 @@
 import React, { useRef, useState } from 'react'
-import { Dimensions, StyleSheet, ScrollView, View, SafeAreaView, Text, FlatList } from 'react-native'
+import { View, StyleSheet, Dimensions, Animated, PanResponder, TouchableOpacity, Text } from 'react-native';
+import ModalDone from '../../assets/component/ModalDone';
+import ModalCancel from '../../assets/component/ModalCancel';
 
-const { height: SCREEN_HEIGHT } = Dimensions.get('window')
-const WIDTH = Dimensions.get('window').width
+const { width: WINDOW_WIDTH, height: WINDOW_HEIGHT } = Dimensions.get('window')
+const bottom_sheet_max_height = WINDOW_HEIGHT * 0.64
+const bottom_sheet_min_height = WINDOW_HEIGHT * 0.04
+const max_upward_translateY = bottom_sheet_min_height - bottom_sheet_max_height
 
-function Test() {
-    const onchange = (e) => {
-        const xOffset = e.nativeEvent.contentOffset.x;
+const max_down_translateY = 0
+const drag_hold = 50
+const Test = () => {
+
+    const animatedValue = useRef(new Animated.Value(0)).current;
+    const lastGestureDy = useRef(0)
+    const [typeA, setTypeA] = useState('done')
+    const panResponder = useRef(
+        PanResponder.create({
+            onStartShouldSetPanResponder: () => true,
+            onPanResponderGrant: () => {
+                animatedValue.setOffset(lastGestureDy.current)
+            },
+            onPanResponderMove: (e, gesture) => {
+                animatedValue.setValue(gesture.dy)
+            },
+            onPanResponderRelease: (e, gesture) => {
+                animatedValue.flattenOffset()
+                if (gesture.dy > 0) {
+                    if (gesture.dy <= drag_hold) {
+                        springAnimated('up')
+                    } else {
+                        springAnimated('down')
+                    }
+                } else {
+                    if (gesture.dy >= -drag_hold) {
+                        springAnimated('down')
+                    } else {
+                        springAnimated('up')
+                    }
+                }
+            }
+
+        })
+    ).current
+
+    const springAnimated = (direction) => {
+        lastGestureDy.current = direction === 'down' ? max_down_translateY : max_upward_translateY
+        Animated.spring(animatedValue, {
+            toValue: lastGestureDy.current,
+            useNativeDriver: true,
+        }).start()
+    }
+
+    const bottomAnimted = {
+        transform: [{
+            translateY: animatedValue.interpolate({
+                inputRange: [max_upward_translateY, max_down_translateY],
+                outputRange: [max_upward_translateY, max_down_translateY],
+                extrapolate: 'clamp'
+            })
+        }]
+    }
+
+    const [type, setType] = useState(<ModalDone />)
+    const onPress = (e) => {
+        setTypeA(e)
+        if (e === 'done') {
+            setType(<ModalDone />)
+        } else {
+            setType(<ModalCancel />)
+        }
 
     }
-    const DATA = [
-        {
-            id: 'bd7acbea-c1b1-46c2-aed5-3ad53abb28ba',
-            title: 'First Item',
-        },
-        {
-            id: '3ac68afc-c605-48d3-a4f8-fbd91aa97f63',
-            title: 'Second Item',
-        },
-        {
-            id: '58694a0f-3da1-471f-bd96-145571e29d72',
-            title: 'Third Item',
-        },
-    ];
 
-    let flatListRef = useRef();
-
-    const Item = ({ title }) => (
-        <View style={styles.warp}>
-            <Text style={styles.title}>{title}</Text>
-        </View>
-    );
-    const [activeView, setActiveView] = useState(0)
     return (
-        <SafeAreaView>
-            <View style={styles.warp}>
-                <FlatList
-                    data={DATA}
-                    horizontal
-                    showsHorizontalScrollIndicator={false}
-                    pagingEnabled
-                    renderItem={({ item }) => <Item title={item.title} />}
-                    keyExtractor={item => item.id}
-                    ref={(ref) => { flatListRef.current = ref }}
-                    style={styles.carousel}
-                />
-                {/* <ScrollView
-                    onScroll={onchange}
-                    showsHorizontalScrollIndicator={false}
-                    pagingEnabled
-                    horizontal
-                    style={styles.warp}
-                >
-                    {
-                        Array(2).fill().map((_, i) => (
-                            <View style={styles.warp} key={i}>
-                                <Text key={i}>Hello, Item {i}</Text>
-                            </View>
 
-                        ))
-                    }
-
-                </ScrollView> */}
-                <View style={styles.warpDot}>
-                    {
-                        Array(2).fill().map((_, i) => (
-                            <Text
-                                key={i}
-                                style={activeView === i ? styles.dotActive : styles.dot}
-                            >●</Text>
-                        ))
-                    }
-                </View>
+        <Animated.View style={[styles.bottomSheet, bottomAnimted]}>
+            <View style={styles.draggable} {...panResponder.panHandlers}>
+                <View style={styles.dragHandle} />
             </View>
-        </SafeAreaView>
-    );
+            <View style={{ flex: 1 }}>
+                <View style={styles.warp}>
+                    <TouchableOpacity
+                        style={typeA === 'done' ? styles.buttonActive : styles.button}
+                        onPress={() => onPress('done')}
+                    >
+                        <Text style={styles.text}>Hoàn thành</Text>
+                    </TouchableOpacity>
+                    <TouchableOpacity
+                        style={typeA === 'huy' ? styles.buttonActive : styles.button}
+                        onPress={() => onPress('huy')}
+                    >
+                        <Text style={styles.text}>Hủy</Text>
+                    </TouchableOpacity>
+                </View>
+                {type}
+            </View>
+
+        </Animated.View>
+
+    )
 }
 
-export default Test;
+export default Test
+
 const styles = StyleSheet.create({
-    BottomSheetContainer: {
-        height: SCREEN_HEIGHT,
-        width: '100%',
-        backgroundColor: 'white',
+    bottomSheet: {
         position: 'absolute',
-        top: SCREEN_HEIGHT,
-        borderRadius: 25
+        width: "100%",
+        height: bottom_sheet_max_height,
+        bottom: bottom_sheet_min_height - bottom_sheet_max_height,
+        backgroundColor: 'white',
+        shadowColor: 'black',
+        shadowOffset: {
+            width: 2,
+            height: 2
+        },
+        shadowRadius: 6,
+        shadowOpacity: 1.0,
+        borderTopLeftRadius: 32,
+        borderTopRightRadius: 32
     },
-    line: {
-        width: 75,
-        height: 4,
-        backgroundColor: "gray",
+    dragHandle: {
+        width: 100,
+        height: 6,
+        backgroundColor: '#d3d3d3',
+        borderRadius: 10
+    },
+    draggable: {
+        width: 132,
+        height: 32,
         alignSelf: 'center',
-        marginVertical: 15,
-        borderRadius: 2
+        alignItems: "center",
+        justifyContent: 'center'
     },
     warp: {
-        width: WIDTH,
-        backgroundColor: 'red',
-        height: SCREEN_HEIGHT * 0.25,
-    },
-    warpDot: {
-        position: 'absolute',
-        bottom: 0,
+        marginTop: 10,
+        width: WINDOW_WIDTH,
+        height: 40,
         flexDirection: 'row',
-        alignSelf: 'center',
+        justifyContent: 'space-around',
     },
-    dotActive: {
-        margin: 3,
-        color: 'black'
+    button: {
+        alignItems: 'center',
+        justifyContent: 'center',
+        paddingVertical: 5,
+        width: 150,
+        borderColor: "#0A95FF",
+        borderWidth: 3,
+        borderRadius: 20
     },
-    dot: {
-        margin: 3,
-        color: "white"
-    }
-
+    buttonActive: {
+        alignItems: 'center',
+        justifyContent: 'center',
+        paddingVertical: 5,
+        width: 150,
+        borderColor: "#0A95FF",
+        borderWidth: 3,
+        borderRadius: 20,
+        backgroundColor: "#0A95FF"
+    },
+    text: {
+        fontSize: 16,
+        lineHeight: 21,
+        fontWeight: 'bold',
+        letterSpacing: 0.25,
+    },
 })

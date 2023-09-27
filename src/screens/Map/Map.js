@@ -5,34 +5,39 @@ import MapView, {
   Marker,
   PROVIDER_GOOGLE,
 } from 'react-native-maps';
-
 import { mapStype } from '../../assets/config/config';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
-import { getPreciseDistance, getCenter } from 'geolib';
+import IconI from 'react-native-vector-icons/Ionicons';
+import { getPreciseDistance } from 'geolib';
 import Geolocation from '@react-native-community/geolocation'
-import { GestureHandlerRootView } from 'react-native-gesture-handler';
-import BottomSheet from '../../assets/component/BottomSheet';
+import axios from 'axios';
+import Test from '../Test/Test';
 
 function Map() {
 
   const [currentLocation, setCurrentLocation] = useState("")
+  const [KH, setKH] = useState("")
 
-
-  const b = getCenter([
-    { latitude: 10.796073868914615, longitude: 106.63558936058817 },
-    { latitude: 10.795542204312463, longitude: 106.63467995227164 }
-  ]);
 
   useEffect(() => {
     _getLocationPermission()
+    axios.get(`https://khachhang.evnspc.vn:5001/APIKTGS/KHANG?madvi=PB0101&ma_tram=01010089`)
+      .then(function (response) {
+        setKH(response.data.find((mA_KHANG) => mA_KHANG > "PB01010026937"));
+
+      })
+      .catch(function (error) {
+        console.log(error);
+      });
   }, [])
+
 
 
   const [marketList, setMarketList] = useState([
     {
       id: 1,
-      latitude: 37.4262536,
-      longitude: -122.093183,
+      latitude: 11.5780472,
+      longitude: 106.7961041,
       KH: "Nguyễn Công Tần",
       DC: "Ấp 4",
       No: 123456,
@@ -42,8 +47,8 @@ function Map() {
     },
     {
       id: 2,
-      latitude: 37.4249876,
-      longitude: -122.0874513,
+      latitude: 11.5636949,
+      longitude: 106.7940244,
       KH: "Nguyễn Công Tần 2",
       DC: "Ấp 41",
       No: 1234562,
@@ -75,6 +80,69 @@ function Map() {
       </View>
     );
   };
+
+  const ad = () => {
+    return <View>
+      <Text>KH: {item.teN_KHANG}</Text>
+      <Text>ĐC: {item.sO_NHA + item.duonG_PHO}</Text>
+      <Text>Số No: {item.sO_TBI}</Text>
+      <Text>Danh số: {item.doanH_SO}</Text>
+      <Text>Mã KH: {item.mA_KHANG}</Text>
+      <Text>Vị trí treo: {item.vtrI_TREO}</Text>
+      <Text>Tọa độ: (lng: '{item.toA_DO.longitude}',lat:'{item.toA_DO.latitude}')</Text>
+      {item.dieN_TTHU !== null ? item.dieN_TTHU.map(i => {
+        return <Text>Tháng {i.thang}/{i.nam}: {i.dieN_TTHU} (kWh)</Text>
+      }) : null}
+      <Text>Áp giá: {item.chuoI_GIA}</Text>
+      <Text>Mã sổ ghi điện {item.mA_SOGCS}</Text>
+      <Text>Điện thoại liên hệ: {item.dieN_THOAI}</Text>
+      <Text>Chủng loại công tơ: {item.loaI_CTO}</Text>
+      <Text>Số hộ: {item.sO_HO}</Text>
+      {item.chI_SO_MOI !== null && item.chI_SO_MOI !== undefined && item.chI_SO_MOI.length !== 0 ? <>
+        <Text>Kỳ: {item.chI_SO_MOI[0].ky}</Text>
+        <Text>Tháng: {item.chI_SO_MOI[0].thang}/{item.chI_SO_MOI[0].nam} </Text>
+        <Text>Bộ chỉ số: {item.chI_SO_MOI[0].bcs}</Text>
+        <Text>Ngày ghi điện: {item.chI_SO_MOI[0].ngaY_GHIDIEN}</Text>
+        <Text style={{ fontWeight: 'bold' }}>Chỉ số mới: {item.chI_SO_MOI[0].chisO_MOI} </Text>
+      </> : null}
+    </View>
+
+  }
+
+  const MyCustomMarkerViewKH = () => {
+    return (
+      <View style={{ alignItems: 'center', width: 180 }}>
+        <IconI name="location" size={30} color="red" />
+        <Text style={{ color: "red" }}>{KH.teN_KHANG}</Text>
+        <Callout >
+          <Text>KH: {KH.teN_KHANG}</Text>
+          <Text>DC: {KH.sO_NHA + " " + KH.duonG_PHO}</Text>
+          <Text>Số No: {KH.sO_TBI}</Text>
+          <Text>Danh số: {KH.doanH_SO}</Text>
+          <Text>Mã KH: {KH.mA_KHANG}</Text>
+          <Text>Vị trí treo: {KH.vtrI_TREO}</Text>
+          <Text>Tọa độ:(Lng: {KH.toA_DO.longitude}, Lat: {KH.toA_DO.latitude})</Text>
+          {KH.dieN_TTHU.map((dien, i) => (
+            <Text key={i}>Tháng {dien.thang}/{dien.nam}: {dien.dieN_TTHU} (kWh)</Text>
+          ))}
+          <Text>Áp giá:{KH.chuoI_GIA}</Text>
+          <Text>Mã sổ ghi điện: {KH.mA_SOGCS}</Text>
+          <Text>Điện thoại liên hệ: {KH.dieN_THOAI}</Text>
+          <Text>Chủng loại công tơ: {KH.loaI_CTO}</Text>
+          <Text>Số hộ: {KH.sO_HO}</Text>
+          {KH.chI_SO_MOI !== null && KH.chI_SO_MOI !== undefined && KH.chI_SO_MOI.length !== 0 ?
+            <View>
+              <Text>Kỳ: {KH.chI_SO_MOI[0].ky}</Text>
+              <Text>Tháng: {KH.chI_SO_MOI.thang}</Text>
+              <Text>Bộ chỉ số: {KH.chI_SO_MOI[0].bcs}</Text>
+              <Text>Ngày ghi điện: {KH.chI_SO_MOI[0].ngaY_GHIDIEN}</Text>
+              <Text>Chỉ số mới: {KH.chI_SO_MOI[0].chisO_MOI}</Text>
+            </View> : null}
+        </Callout>
+      </View>
+    );
+  };
+
 
   const getDistance = (props) => {
     const a = getPreciseDistance(
@@ -110,29 +178,39 @@ function Map() {
 
 
   return (
-    <GestureHandlerRootView style={styles.container}>
-
+    <View style={styles.container}>
       <View style={styles.map}>
-        {currentLocation !== "" ?
+        {KH !== "" ?
           <MapView
             // customMapStyle={mapStype}
             provider={PROVIDER_GOOGLE}
             style={styles.map}
             region={{
-              latitude: currentLocation.latitude,
-              longitude: currentLocation.longitude,
+              longitude: parseFloat(KH.toA_DO.longitude),
+              latitude: parseFloat(KH.toA_DO.latitude),
               latitudeDelta: 0.005,
               longitudeDelta: 0.005,
             }}>
 
-            <Marker
+            {/* <Marker
               coordinate={{
                 latitude: currentLocation.latitude,
                 longitude: currentLocation.longitude,
               }}
             >
               <MyCustomMarkerView />
+            </Marker> */}
+
+
+            <Marker
+              coordinate={{
+                longitude: parseFloat(KH.toA_DO.longitude),
+                latitude: parseFloat(KH.toA_DO.latitude),
+              }}
+            >
+              <MyCustomMarkerViewKH />
             </Marker>
+
 
             {marketList.map(marker => {
               return (
@@ -144,7 +222,6 @@ function Map() {
                   }}
                 >
                   <MyCustomMarkerViewNV marker={marker} />
-
                 </Marker>
 
               );
@@ -152,10 +229,8 @@ function Map() {
           </MapView>
           : <></>}
       </View>
-      <BottomSheet>
-
-      </BottomSheet>
-    </GestureHandlerRootView >
+      <Test />
+    </View >
   );
 }
 const styles = StyleSheet.create({
@@ -163,7 +238,6 @@ const styles = StyleSheet.create({
     flexDirection: 'column',
     flex: 1,
     backgroundColor: 'black',
-
   },
   map: {
     flex: 1,

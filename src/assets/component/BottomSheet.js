@@ -1,12 +1,9 @@
-import React, { useRef, useState } from 'react'
-import { Dimensions, StyleSheet, View, Text, TouchableOpacity, Pressable } from 'react-native'
-
+import React, { useState } from 'react'
+import { Dimensions, StyleSheet, View, Text, TouchableOpacity } from 'react-native'
 import { Gesture, GestureDetector } from 'react-native-gesture-handler';
 import Animated, { useAnimatedStyle, useSharedValue, interpolate, Extrapolate, withSpring } from 'react-native-reanimated';
 import ModalCancel from './ModalCancel';
 import ModalDone from './ModalDone';
-
-
 
 const { height: SCREEN_HEIGHT } = Dimensions.get('window')
 const WIDTH = Dimensions.get('window').width
@@ -16,7 +13,7 @@ const BottomSheet = () => {
     const translationY = useSharedValue(0)
     const context = useSharedValue({ y: 0 })
     const active = useSharedValue(false);
-    const [type, setType] = useState(<ModalDone />)
+
     const [typeA, setTypeA] = useState('done')
 
     const scrollTo = React.useCallback((destination) => {
@@ -39,9 +36,13 @@ const BottomSheet = () => {
         translationY.value = e.translationY + context.value.y
         translationY.value = Math.max(translationY.value, max_translateY)
     }).onEnd(() => {
-        if (translationY.value > -60) {
+        if (translationY.value > -60 || translationY.value > -200) {
             scrollTo(-60);
         } else if (translationY.value < -SCREEN_HEIGHT / 1.5) {
+            scrollTo(max_translateY);
+        } else if (translationY.value > -300 && typeA === 'done') {
+            scrollTo(-60);
+        } else if (translationY.value < -300 && typeA === 'huy') {
             scrollTo(max_translateY);
         }
     })
@@ -58,13 +59,13 @@ const BottomSheet = () => {
             transform: [{ translateY: translationY.value }]
         }
     })
-
+    const [type, setType] = useState(<ModalDone scrollTo={scrollTo} max_translateY={max_translateY} />)
     const onPress = (e) => {
         setTypeA(e)
         if (e === 'done') {
-            setType(<ModalDone />)
+            setType(<ModalDone scrollTo={scrollTo} max_translateY={max_translateY} />)
         } else {
-            setType(<ModalCancel />)
+            setType(<ModalCancel scrollTo={scrollTo} />)
         }
 
     }
@@ -102,10 +103,11 @@ export default BottomSheet
 const styles = StyleSheet.create({
     BottomSheetContainer: {
         height: SCREEN_HEIGHT,
+        top: SCREEN_HEIGHT,
         width: '100%',
         backgroundColor: 'white',
         position: 'absolute',
-        top: SCREEN_HEIGHT,
+
         borderRadius: 25
     },
     line: {

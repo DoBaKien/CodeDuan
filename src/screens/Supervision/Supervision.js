@@ -2,6 +2,7 @@ import React from 'react';
 import { StyleSheet, View, Text, TouchableOpacity, Alert } from 'react-native';
 import { Table, TableWrapper, Row, Cell } from 'react-native-table-component';
 import ModalVision from '../../assets/component/ModalVision';
+import Footer from '../../assets/component/Footer';
 
 const Supervision = () => {
     const [modalVisible, setModalVisible] = React.useState(false)
@@ -43,6 +44,7 @@ const Supervision = () => {
                     ))
                 }
             </Table>
+            <Footer />
         </View>
     );
 };

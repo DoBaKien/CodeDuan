@@ -53,9 +53,9 @@ export default function Home({ navigation }) {
                 }}
             />
             <Button
-                title="Test"
+                title="Realm"
                 onPress={() => {
-                    navigation.navigate('Test');
+                    navigation.navigate('Realm');
                 }}
             />
 

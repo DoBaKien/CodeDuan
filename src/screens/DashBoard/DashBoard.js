@@ -1,26 +1,25 @@
 import { View, StyleSheet, Text } from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import IconM from 'react-native-vector-icons/MaterialCommunityIcons';
-
-
+import Footer from '../../assets/component/Footer';
 
 function DashBoard() {
     return (
         <View style={styles.container}>
-            <View style={styles.viewCircle} >
+            <View style={[styles.viewCircle, { flex: 0.7 }]} >
                 <View style={styles.circle}>
                     <View elevation={5} style={styles.circleIn}>
                         <Text style={styles.circleText}>8</Text>
                     </View>
                 </View>
             </View>
-            <View style={[styles.viewCircle, { justifyContent: 'flex-start' }]} >
+            <View style={[styles.viewCircle, { justifyContent: 'flex-start', flex: 0.6 }]} >
                 <Text style={styles.text}>Khoảng cách đã đi trong ngày</Text>
                 <Text style={styles.text}>Số phiếu hoàn thành</Text>
                 <Text style={styles.text}>Số phiếu từ chối</Text>
                 <Text style={styles.text}>YC001 - Thùy Anh</Text>
             </View>
-            <View style={[styles.viewCircle, { flexDirection: "row", justifyContent: "space-evenly" }]}>
+            <View style={[styles.viewCircle, { flexDirection: "row", justifyContent: "space-evenly", flex: 1 }]}>
                 <View elevation={5} style={styles.circle1}>
                     <Icon name="assistant-direction" size={50} color="black" />
                 </View>
@@ -31,6 +30,7 @@ function DashBoard() {
                     <Icon name="location-on" size={50} color="black" />
                 </View>
             </View>
+            <Footer />
         </View>
     );
 }
@@ -41,7 +41,7 @@ const styles = StyleSheet.create({
         flexDirection: 'column',
     },
     viewCircle: {
-        flex: 1,
+
         justifyContent: 'center',
         alignItems: 'center'
     },
