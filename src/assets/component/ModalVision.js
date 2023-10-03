@@ -1,16 +1,12 @@
 import {
   Modal,
-  Pressable,
   Text,
   View,
   StyleSheet,
   TextInput,
   FlatList,
   Image,
-  Touchable,
   TouchableOpacity,
-  ScrollView,
-  TouchableWithoutFeedback,
 } from 'react-native';
 
 function ModalVision(props) {
@@ -130,36 +126,10 @@ function ModalVision(props) {
           <View style={styles.modalView}>
             <Text style={styles.title}>{props.type}</Text>
             {checkType()}
-
-            <Pressable
-              style={styles.button}
-              onPress={() => props.setModalVisible(!props.modalVisible)}>
-              <Text style={styles.textStyle}>Đóng</Text>
-            </Pressable>
           </View>
         </TouchableOpacity>
       </Modal>
     </View>
-    // <Modal
-    //   animationType="slide"
-    //   transparent={true}
-    //   visible={props.modalVisible}
-    //   onRequestClose={() => {
-    //     props.setModalVisible(!props.modalVisible);
-    //   }}>
-    //   <View style={styles.centeredView}>
-    // <View style={styles.modalView}>
-    //   <Text style={styles.title}>{props.type}</Text>
-    //   {checkType()}
-
-    //   <Pressable
-    //     style={styles.button}
-    //     onPress={() => props.setModalVisible(!props.modalVisible)}>
-    //     <Text style={styles.textStyle}>Đóng</Text>
-    //   </Pressable>
-    // </View>
-    //   </View>
-    // </Modal>
   );
 }
 const styles = StyleSheet.create({

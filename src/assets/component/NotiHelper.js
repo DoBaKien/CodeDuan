@@ -2,6 +2,7 @@ import messaging from '@react-native-firebase/messaging';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 import notifee, {AndroidImportance, EventType} from '@notifee/react-native';
+import axios from 'axios';
 
 export async function requestUserPermission() {
   const authStatus = await messaging().requestPermission();
@@ -17,7 +18,7 @@ export async function requestUserPermission() {
 
 const getFCMToken = async () => {
   let fcmToken = await AsyncStorage.getItem('fcmToken');
-  // console.log(fcmToken, "oldtoken");
+  console.log(fcmToken, 'oldtoken');
 
   if (!fcmToken) {
     try {
@@ -43,7 +44,7 @@ export const NotificationService = () => {
   messaging().onMessage(async remoteMessage => {
     // console.log('Noti in foreground', remoteMessage);
     console.log(remoteMessage.notification);
-    onDisplayNotification(remoteMessage);
+    onDisplayNotification(remoteMessage.notification);
   });
 
   messaging()
@@ -61,6 +62,7 @@ export const NotificationService = () => {
 
 export async function onDisplayNotification(data) {
   // Request permissions (required for iOS)
+
   notifee
     .getBadgeCount()
     .then(count => console.log('Current badge count: ', count));
@@ -130,37 +132,3 @@ export async function onDisplayNotification(data) {
     }
   });
 }
-
-const s = [
-  {
-    notification: {
-      android: {
-        actions: [Array],
-        asForegroundService: false,
-        autoCancel: true,
-        badgeIconType: 2,
-        channelId: 'default1',
-        chronometerDirection: 'up',
-        circularLargeIcon: false,
-        colorized: false,
-        defaults: [Array],
-        groupAlertBehavior: 0,
-        groupSummary: false,
-        importance: 4,
-        lightUpScreen: false,
-        localOnly: false,
-        loopSound: false,
-        ongoing: false,
-        onlyAlertOnce: false,
-        showChronometer: false,
-        showTimestamp: false,
-        smallIcon: 'ic_launcher',
-        visibility: 0,
-      },
-      body: 'đã dc phân công',
-      data: {},
-      id: 'JAaRdfR6XGPk3g5QtabZ',
-      title: 'thông báo',
-    },
-  },
-];

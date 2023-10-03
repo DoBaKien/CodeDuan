@@ -1,4 +1,4 @@
-import {Button, StyleSheet, Text, TouchableOpacity, View} from 'react-native';
+import {StyleSheet, Text, TouchableOpacity, View} from 'react-native';
 import React, {useEffect} from 'react';
 import {
   NotificationService,
@@ -28,6 +28,13 @@ export default function Home({navigation}) {
           onDisplayNotification({title: 'thông báo', body: 'đã dc phân công'});
         }}>
         <Text style={styles.appButtonText}>Thông báo</Text>
+      </TouchableOpacity>
+      <TouchableOpacity
+        style={styles.btn}
+        onPress={() => {
+          navigation.navigate('Order');
+        }}>
+        <Text style={styles.appButtonText}>Đơn yêu cầu</Text>
       </TouchableOpacity>
 
       <TouchableOpacity

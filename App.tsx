@@ -8,6 +8,7 @@ import Assignment from './src/screens/Assignment/Assignment';
 import Api from './src/screens/Api/Api';
 import Header from './src/assets/component/Header';
 import RealmEx from './src/screens/Realm/Realm';
+import Order from './src/screens/Order/Order';
 // tất cả câu trả lời keystore là aaa
 const Stack = createNativeStackNavigator();
 
@@ -56,6 +57,12 @@ export default function App() {
           component={RealmEx}
           options={{
             headerShown: false,
+          }}></Stack.Screen>
+        <Stack.Screen
+          name="Order"
+          component={Order}
+          options={{
+            header: () => <Header></Header>,
           }}></Stack.Screen>
       </Stack.Navigator>
     </NavigationContainer>
