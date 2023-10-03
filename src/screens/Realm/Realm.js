@@ -1,6 +1,5 @@
 import {useState} from 'react';
 import {
-  Button,
   StyleSheet,
   Text,
   TextInput,
@@ -13,11 +12,7 @@ import Realm from 'realm';
 function RealmEx() {
   const [name, setName] = useState('');
   const [age, setAge] = useState('');
-  const [newName, setNewName] = useState('');
-  const [newAge, setNewAge] = useState('');
   const [id, setId] = useState('');
-  const [idD, setIdD] = useState('');
-
   const [list, setList] = useState([]);
   const PersonSchema = {
     name: 'Person',
@@ -84,6 +79,13 @@ function RealmEx() {
     console.log('done');
   };
 
+  const deleteAll = async () => {
+    const realm = await getRealm();
+    realm.write(() => {
+      realm.delete(person);
+    });
+  };
+
   return (
     <View>
       <TextInput
@@ -92,12 +94,14 @@ function RealmEx() {
         style={styles.input}
         keyboardType="numeric"
         placeholder="id"
+        placeholderTextColor="gray"
       />
       <TextInput
         onChangeText={setName}
         value={name}
         style={styles.input}
         placeholder="name"
+        placeholderTextColor="gray"
       />
       <TextInput
         onChangeText={setAge}
@@ -105,6 +109,7 @@ function RealmEx() {
         style={styles.input}
         keyboardType="numeric"
         placeholder="age"
+        placeholderTextColor="gray"
       />
       <View style={{gap: 10}}>
         <TouchableOpacity
@@ -127,6 +132,9 @@ function RealmEx() {
           style={styles.btn}
           onPress={() => deletePerson(parseInt(id))}>
           <Text style={styles.appButtonText}>delete</Text>
+        </TouchableOpacity>
+        <TouchableOpacity style={styles.btn} onPress={() => deleteAll()}>
+          <Text style={styles.appButtonText}>delete All</Text>
         </TouchableOpacity>
       </View>
       <View style={{marginTop: 20, alignItems: 'center'}}>
@@ -159,6 +167,7 @@ const styles = StyleSheet.create({
     margin: 12,
     borderWidth: 1,
     padding: 10,
+    color: 'black',
   },
   btn: {
     elevation: 8,

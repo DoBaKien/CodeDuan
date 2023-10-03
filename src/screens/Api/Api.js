@@ -10,16 +10,16 @@ function Api() {
   const [countdown1, setCountDown1] = useState(60);
 
   useEffect(() => {
-    Geolocation.getCurrentPosition(info => setCurrentLocation(info.coords));
     axios
-
       .get(`${url}Api/SangTaiChuyenLuoi/find?id=${2}`)
       .then(function (response) {
+        console.log(response.data);
         setLocation(response.data);
       })
       .catch(function (error) {
         console.log(error);
       });
+    Geolocation.getCurrentPosition(info => setCurrentLocation(info.coords));
   }, []);
 
   useEffect(() => {
@@ -35,7 +35,6 @@ function Api() {
 
   useEffect(() => {
     const intervalId = setInterval(() => {
-      console.log('qwe');
       Geolocation.getCurrentPosition(position => {
         axios
           .post(`${url}Api/SangTaiChuyenLuoi/update`, {
@@ -65,14 +64,26 @@ function Api() {
         height: '100%',
         width: '100%',
       }}>
-      <Text style={{fontSize: 30, marginTop: 50}}>Vị trí lấy từ database</Text>
-      <Text style={{fontSize: 30}}>latitude: {location.LATITUDE}</Text>
-      <Text style={{fontSize: 30}}>longitude: {location.LONGITUDE}</Text>
-
-      <Text style={{fontSize: 30, marginTop: 50}}>Vị trí hiện tại</Text>
-      <Text style={{fontSize: 30}}>latitude: {currentLocation.latitude}</Text>
-      <Text style={{fontSize: 30}}>longitude: {currentLocation.longitude}</Text>
       <Text>{countdown1}</Text>
+      <Text style={{fontSize: 30, color: 'black', marginTop: 50}}>
+        Vị trí lấy từ database
+      </Text>
+      <Text style={{fontSize: 30, color: 'black'}}>
+        latitude: {location.LATITUDE}
+      </Text>
+      <Text style={{fontSize: 30, color: 'black'}}>
+        longitude: {location.LONGITUDE}
+      </Text>
+
+      <Text style={{fontSize: 30, color: 'black', marginTop: 50}}>
+        Vị trí hiện tại
+      </Text>
+      <Text style={{fontSize: 30, color: 'black'}}>
+        latitude: {currentLocation.latitude}
+      </Text>
+      <Text style={{fontSize: 30, color: 'black'}}>
+        longitude: {currentLocation.longitude}
+      </Text>
     </View>
   );
 }

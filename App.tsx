@@ -6,10 +6,9 @@ import Home from './src/screens/Home/Home';
 import Supervision from './src/screens/Supervision/Supervision';
 import Assignment from './src/screens/Assignment/Assignment';
 import Api from './src/screens/Api/Api';
-import Test from './src/screens/Test/Test';
 import Header from './src/assets/component/Header';
 import RealmEx from './src/screens/Realm/Realm';
-
+// tất cả câu trả lời keystore là aaa
 const Stack = createNativeStackNavigator();
 
 export default function App() {

@@ -15,6 +15,7 @@ function Map() {
 
   useEffect(() => {
     _getLocationPermission();
+
     axios
       .get(
         `https://khachhang.evnspc.vn:5001/APIKTGS/KHANG?madvi=PB0101&ma_tram=01010089`,
@@ -60,15 +61,15 @@ function Map() {
   const MyCustomMarkerViewNV = props => {
     return (
       <View style={{alignItems: 'center', width: 180}}>
-        <Text>{getDistance(props.marker)}</Text>
+        <Text style={{color: 'black'}}> {getDistance(props.marker)}</Text>
         <Icon name="account" size={30} color="black" />
         <Text style={{color: 'red'}}>Nhan viên</Text>
         <Callout>
-          <Text>KH:{props.marker.KH}</Text>
-          <Text>DC:{props.marker.DC}</Text>
-          <Text>Số No:{props.marker.No}</Text>
-          <Text>DanhSo:{props.marker.DanhSo}</Text>
-          <Text>MaKH:{props.marker.MaKH}</Text>
+          <Text style={{color: 'black'}}>KH:{props.marker.KH}</Text>
+          <Text style={{color: 'black'}}>DC:{props.marker.DC}</Text>
+          <Text style={{color: 'black'}}>Số No:{props.marker.No}</Text>
+          <Text style={{color: 'black'}}>DanhSo:{props.marker.DanhSo}</Text>
+          <Text style={{color: 'black'}}>MaKH:{props.marker.MaKH}</Text>
         </Callout>
       </View>
     );
@@ -77,39 +78,47 @@ function Map() {
   const ad = () => {
     return (
       <View>
-        <Text>KH: {item.teN_KHANG}</Text>
-        <Text>ĐC: {item.sO_NHA + item.duonG_PHO}</Text>
-        <Text>Số No: {item.sO_TBI}</Text>
-        <Text>Danh số: {item.doanH_SO}</Text>
-        <Text>Mã KH: {item.mA_KHANG}</Text>
-        <Text>Vị trí treo: {item.vtrI_TREO}</Text>
-        <Text>
+        <Text style={{color: 'black'}}>KH: {item.teN_KHANG}</Text>
+        <Text style={{color: 'black'}}>ĐC: {item.sO_NHA + item.duonG_PHO}</Text>
+        <Text style={{color: 'black'}}>Số No: {item.sO_TBI}</Text>
+        <Text style={{color: 'black'}}>Danh số: {item.doanH_SO}</Text>
+        <Text style={{color: 'black'}}>Mã KH: {item.mA_KHANG}</Text>
+        <Text style={{color: 'black'}}>Vị trí treo: {item.vtrI_TREO}</Text>
+        <Text style={{color: 'black'}}>
           Tọa độ: (lng: '{item.toA_DO.longitude}',lat:'{item.toA_DO.latitude}')
         </Text>
         {item.dieN_TTHU !== null
           ? item.dieN_TTHU.map(i => {
               return (
-                <Text>
+                <Text style={{color: 'black'}}>
                   Tháng {i.thang}/{i.nam}: {i.dieN_TTHU} (kWh)
                 </Text>
               );
             })
           : null}
-        <Text>Áp giá: {item.chuoI_GIA}</Text>
-        <Text>Mã sổ ghi điện {item.mA_SOGCS}</Text>
-        <Text>Điện thoại liên hệ: {item.dieN_THOAI}</Text>
-        <Text>Chủng loại công tơ: {item.loaI_CTO}</Text>
-        <Text>Số hộ: {item.sO_HO}</Text>
+        <Text style={{color: 'black'}}>Áp giá: {item.chuoI_GIA}</Text>
+        <Text style={{color: 'black'}}>Mã sổ ghi điện {item.mA_SOGCS}</Text>
+        <Text style={{color: 'black'}}>
+          Điện thoại liên hệ: {item.dieN_THOAI}
+        </Text>
+        <Text style={{color: 'black'}}>
+          Chủng loại công tơ: {item.loaI_CTO}
+        </Text>
+        <Text style={{color: 'black'}}>Số hộ: {item.sO_HO}</Text>
         {item.chI_SO_MOI !== null &&
         item.chI_SO_MOI !== undefined &&
         item.chI_SO_MOI.length !== 0 ? (
           <>
-            <Text>Kỳ: {item.chI_SO_MOI[0].ky}</Text>
-            <Text>
+            <Text style={{color: 'black'}}>Kỳ: {item.chI_SO_MOI[0].ky}</Text>
+            <Text style={{color: 'black'}}>
               Tháng: {item.chI_SO_MOI[0].thang}/{item.chI_SO_MOI[0].nam}{' '}
             </Text>
-            <Text>Bộ chỉ số: {item.chI_SO_MOI[0].bcs}</Text>
-            <Text>Ngày ghi điện: {item.chI_SO_MOI[0].ngaY_GHIDIEN}</Text>
+            <Text style={{color: 'black'}}>
+              Bộ chỉ số: {item.chI_SO_MOI[0].bcs}
+            </Text>
+            <Text style={{color: 'black'}}>
+              Ngày ghi điện: {item.chI_SO_MOI[0].ngaY_GHIDIEN}
+            </Text>
             <Text style={{fontWeight: 'bold'}}>
               Chỉ số mới: {item.chI_SO_MOI[0].chisO_MOI}{' '}
             </Text>
@@ -125,34 +134,46 @@ function Map() {
         <IconI name="location" size={30} color="red" />
         <Text style={{color: 'red'}}>{KH.teN_KHANG}</Text>
         <Callout>
-          <Text>KH: {KH.teN_KHANG}</Text>
-          <Text>DC: {KH.sO_NHA + ' ' + KH.duonG_PHO}</Text>
-          <Text>Số No: {KH.sO_TBI}</Text>
-          <Text>Danh số: {KH.doanH_SO}</Text>
-          <Text>Mã KH: {KH.mA_KHANG}</Text>
-          <Text>Vị trí treo: {KH.vtrI_TREO}</Text>
-          <Text>
+          <Text style={{color: 'black'}}>KH: {KH.teN_KHANG}</Text>
+          <Text style={{color: 'black'}}>
+            DC: {KH.sO_NHA + ' ' + KH.duonG_PHO}
+          </Text>
+          <Text style={{color: 'black'}}>Số No: {KH.sO_TBI}</Text>
+          <Text style={{color: 'black'}}>Danh số: {KH.doanH_SO}</Text>
+          <Text style={{color: 'black'}}>Mã KH: {KH.mA_KHANG}</Text>
+          <Text style={{color: 'black'}}>Vị trí treo: {KH.vtrI_TREO}</Text>
+          <Text style={{color: 'black'}}>
             Tọa độ:(Lng: {KH.toA_DO.longitude}, Lat: {KH.toA_DO.latitude})
           </Text>
           {KH.dieN_TTHU.map((dien, i) => (
-            <Text key={i}>
+            <Text style={{color: 'black'}} key={i}>
               Tháng {dien.thang}/{dien.nam}: {dien.dieN_TTHU} (kWh)
             </Text>
           ))}
-          <Text>Áp giá:{KH.chuoI_GIA}</Text>
-          <Text>Mã sổ ghi điện: {KH.mA_SOGCS}</Text>
-          <Text>Điện thoại liên hệ: {KH.dieN_THOAI}</Text>
-          <Text>Chủng loại công tơ: {KH.loaI_CTO}</Text>
-          <Text>Số hộ: {KH.sO_HO}</Text>
+          <Text style={{color: 'black'}}>Áp giá:{KH.chuoI_GIA}</Text>
+          <Text style={{color: 'black'}}>Mã sổ ghi điện: {KH.mA_SOGCS}</Text>
+          <Text style={{color: 'black'}}>
+            Điện thoại liên hệ: {KH.dieN_THOAI}
+          </Text>
+          <Text style={{color: 'black'}}>
+            Chủng loại công tơ: {KH.loaI_CTO}
+          </Text>
+          <Text style={{color: 'black'}}>Số hộ: {KH.sO_HO}</Text>
           {KH.chI_SO_MOI !== null &&
           KH.chI_SO_MOI !== undefined &&
           KH.chI_SO_MOI.length !== 0 ? (
             <View>
-              <Text>Kỳ: {KH.chI_SO_MOI[0].ky}</Text>
-              <Text>Tháng: {KH.chI_SO_MOI.thang}</Text>
-              <Text>Bộ chỉ số: {KH.chI_SO_MOI[0].bcs}</Text>
-              <Text>Ngày ghi điện: {KH.chI_SO_MOI[0].ngaY_GHIDIEN}</Text>
-              <Text>Chỉ số mới: {KH.chI_SO_MOI[0].chisO_MOI}</Text>
+              <Text style={{color: 'black'}}>Kỳ: {KH.chI_SO_MOI[0].ky}</Text>
+              <Text style={{color: 'black'}}>Tháng: {KH.chI_SO_MOI.thang}</Text>
+              <Text style={{color: 'black'}}>
+                Bộ chỉ số: {KH.chI_SO_MOI[0].bcs}
+              </Text>
+              <Text style={{color: 'black'}}>
+                Ngày ghi điện: {KH.chI_SO_MOI[0].ngaY_GHIDIEN}
+              </Text>
+              <Text style={{color: 'black'}}>
+                Chỉ số mới: {KH.chI_SO_MOI[0].chisO_MOI}
+              </Text>
             </View>
           ) : null}
         </Callout>
@@ -213,13 +234,13 @@ function Map() {
                 latitudeDelta: 0.01,
                 longitudeDelta: 0.01,
               }}>
-              {/* <Marker
-              coordinate={{
-                latitude: currentLocation.latitude,
-                longitude: currentLocation.longitude,
-              }}>
-              <MyCustomMarkerView />
-            </Marker> */}
+              <Marker
+                coordinate={{
+                  latitude: currentLocation.latitude,
+                  longitude: currentLocation.longitude,
+                }}>
+                <MyCustomMarkerView />
+              </Marker>
 
               <Marker
                 coordinate={{
