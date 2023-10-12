@@ -1,8 +1,7 @@
 import messaging from '@react-native-firebase/messaging';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-
+import {Linking} from 'react-native';
 import notifee, {AndroidImportance, EventType} from '@notifee/react-native';
-import axios from 'axios';
 
 export async function requestUserPermission() {
   const authStatus = await messaging().requestPermission();
@@ -37,32 +36,36 @@ export const NotificationService = () => {
   messaging().onNotificationOpenedApp(remoteMessage => {
     console.log(
       'Notification caused app to open from background state:',
-      remoteMessage.notification,
+      remoteMessage.data,
     );
+
+    // Linking.openURL(`myapp://app/${remoteMessage.data.screen}`);
   });
 
   messaging().onMessage(async remoteMessage => {
-    // console.log('Noti in foreground', remoteMessage);
-    console.log(remoteMessage.notification);
-    onDisplayNotification(remoteMessage.notification);
+    console.log('Noti in foreground', remoteMessage.data);
+
+    onDisplayNotification(
+      remoteMessage.notification,
+      remoteMessage.data.screen,
+    );
   });
 
   messaging()
     .getInitialNotification()
     .then(remoteMessage => {
       if (remoteMessage) {
+        // Linking.openURL(`myapp://app/${remoteMessage.data.screen}`);
         console.log(
           'Notification caused app to open from quit state:',
-          remoteMessage.notification,
+          remoteMessage.data,
         );
-        setInitialRoute(remoteMessage.data.type); // e.g. "Settings"
       }
     });
 };
 
-export async function onDisplayNotification(data) {
+export async function onDisplayNotification(data, screen) {
   // Request permissions (required for iOS)
-
   notifee
     .getBadgeCount()
     .then(count => console.log('Current badge count: ', count));
@@ -100,33 +103,33 @@ export async function onDisplayNotification(data) {
     },
   });
 
-  notifee.onBackgroundEvent(async ({type, detail}) => {
-    const {notification, pressAction} = detail;
-    // Check if the user pressed the "Mark as read" action
-    if (type === EventType.ACTION_PRESS && pressAction.id === 'accept') {
-      // Update external API
-      console.log('accept bg');
-      await notifee.cancelNotification(notification.id);
-    } else if (type === EventType.ACTION_PRESS && pressAction.id === 'ingore') {
-      console.log('ingore bg');
-      await notifee.cancelNotification(notification.id);
-    }
-  });
+  // notifee.onBackgroundEvent(async ({type, detail}) => {
+  //   const {notification, pressAction} = detail;
+  //   // Check if the user pressed the "Mark as read" action
+  //   if (type === EventType.ACTION_PRESS && pressAction.id === 'accept') {
+  //     console.log('accept bg');
+  //     await notifee.cancelNotification(notification.id);
+  //   } else if (type === EventType.ACTION_PRESS && pressAction.id === 'ingore') {
+  //     console.log('ingore bg');
+  //     await notifee.cancelNotification(notification.id);
+  //   }
+  // });
 
   notifee.onForegroundEvent(async ({type, detail}) => {
     if (detail.pressAction?.id !== undefined) {
-      console.log(detail.pressAction.id);
       await notifee.cancelNotification(detail.notification.id);
+      console.log(detail.pressAction.id);
     } else {
       switch (type) {
         case EventType.DISMISSED:
-          console.log('User dismissed notification', detail.notification);
+          // console.log('User dismissed notification', detail.notification);
           await notifee.cancelNotification(detail.notification.id);
           break;
         case EventType.PRESS:
-          console.log('User pressed notification', detail.notification);
-          await notifee.cancelNotification(detail.notification.id);
+          Linking.openURL(`myapp://app/${screen}`);
 
+          // console.log('User pressed notification', detail.notification);
+          await notifee.cancelNotification(detail.notification.id);
           break;
       }
     }

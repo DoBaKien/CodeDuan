@@ -1,21 +1,27 @@
 import React, {useState} from 'react';
 import {
-  KeyboardAvoidingView,
   StyleSheet,
   Text,
   View,
-  TextInput,
   TouchableOpacity,
-  Keyboard,
   ScrollView,
 } from 'react-native';
 import Task from '../../assets/component/Task';
-import {dataPc} from '../../assets/component/data';
 import ModalVision from '../../assets/component/ModalVision';
+import {dataYc} from '../../assets/component/data';
 
-const Order = () => {
+const Order = ({navigation}) => {
   const [modalVisible, setModalVisible] = useState(false);
   const [type, setType] = useState('');
+
+  const handleClick = data => {
+    if (data === 'Đang xử lý') {
+      navigation.navigate('Details');
+    } else {
+      setType(data);
+      setModalVisible(true);
+    }
+  };
   return (
     <View style={styles.container}>
       <ModalVision
@@ -36,12 +42,12 @@ const Order = () => {
               <Text style={styles.itemTextName}>Tên khách hàng</Text>
               <Text style={styles.itemTextStt}>Trạng thái</Text>
             </View>
-            {dataPc.map((item, index) => {
+            {dataYc.map((item, index) => {
               return (
                 <TouchableOpacity
                   key={index}
                   onPress={() => {
-                    setModalVisible(true), setType(item.trangThai);
+                    handleClick(item.trangThai);
                   }}>
                   <Task data={item} />
                 </TouchableOpacity>

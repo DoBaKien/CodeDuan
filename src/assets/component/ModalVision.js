@@ -7,6 +7,7 @@ import {
   FlatList,
   Image,
   TouchableOpacity,
+  Pressable,
 } from 'react-native';
 
 function ModalVision(props) {
@@ -28,9 +29,9 @@ function ModalVision(props) {
             margin: 20,
             justifyContent: 'space-between',
           }}>
-          <View style={styles.circle}>
+          <TouchableOpacity style={styles.circle}>
             <Text style={styles.circleText}>3.5h</Text>
-          </View>
+          </TouchableOpacity>
           <View style={styles.circle}>
             <Text style={styles.circleText}>80m</Text>
           </View>
@@ -105,31 +106,92 @@ function ModalVision(props) {
           </View>
         </View>
       );
+    } else if (props.type === 'Chưa đồng bộ') {
+      return (
+        <View style={{width: '100%'}}>
+          <View style={styles.viewInput}>
+            <Text style={styles.text}>Nguyên nhân: </Text>
+            <TextInput
+              value="This is disabled"
+              editable={false}
+              style={styles.input}
+            />
+          </View>
+
+          <View style={styles.viewInput}>
+            <Text style={styles.text}>Cách xử lý: </Text>
+            <TextInput
+              value="This is disabled"
+              editable={false}
+              style={styles.input}
+            />
+          </View>
+          <View style={styles.viewInput}>
+            <Text style={styles.text}>Kết quả: </Text>
+            <TextInput
+              value="This is disabled"
+              editable={false}
+              style={styles.input}
+            />
+          </View>
+          <View style={styles.viewImage}>
+            <View style={{width: '40%'}}>
+              <FlatList
+                data={data}
+                keyExtractor={item => item.id}
+                renderItem={renderItem}
+                horizontal={true}
+              />
+            </View>
+            <View style={{width: '40%'}}>
+              <FlatList
+                data={data}
+                keyExtractor={item => item.id}
+                renderItem={renderItem}
+                horizontal={true}
+              />
+            </View>
+          </View>
+          <View style={styles.viewInput}>
+            <Text style={styles.text}>Ghi chú: </Text>
+            <TextInput
+              value="This is disabled"
+              editable={false}
+              style={styles.input}
+            />
+          </View>
+          <View
+            style={{
+              width: '100%',
+              justifyContent: 'center',
+              alignItems: 'center',
+            }}>
+            <Pressable style={[styles.button, {width: 200}]}>
+              <Text style={styles.textStyle}>Đồng bộ</Text>
+            </Pressable>
+          </View>
+        </View>
+      );
     }
   };
   return (
-    <View>
-      <Modal
-        animationType="fade"
-        transparent={true}
-        visible={props.modalVisible}
-        onRequestClose={() => {
-          props.setModalVisible(!props.modalVisible);
+    <Modal
+      animationType="fade"
+      transparent={true}
+      visible={props.modalVisible}
+      onRequestClose={() => props.setModalVisible(false)}>
+      <TouchableOpacity
+        style={styles.centeredView}
+        activeOpacity={1}
+        onPressOut={() => {
+          props.setModalVisible(false);
         }}>
-        <TouchableOpacity
-          View
-          style={styles.centeredView}
-          activeOpacity={1}
-          onPressOut={() => {
-            props.setModalVisible(false);
-          }}>
-          <View style={styles.modalView}>
-            <Text style={styles.title}>{props.type}</Text>
-            {checkType()}
-          </View>
-        </TouchableOpacity>
-      </Modal>
-    </View>
+        <View style={styles.modalView}>
+          <Text style={styles.title}>{props.type}</Text>
+          {checkType()}
+        </View>
+      </TouchableOpacity>
+    </Modal>
   );
 }
 const styles = StyleSheet.create({
@@ -139,6 +201,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     backgroundColor: 'rgba(0, 0, 0, 0.5)',
   },
+
   modalView: {
     margin: 10,
     backgroundColor: 'white',

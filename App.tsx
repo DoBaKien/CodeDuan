@@ -9,12 +9,14 @@ import Api from './src/screens/Api/Api';
 import Header from './src/assets/component/Header';
 import RealmEx from './src/screens/Realm/Realm';
 import Order from './src/screens/Order/Order';
+import linking from './linking';
+import Details from './src/screens/Details/Details';
 // tất cả câu trả lời keystore là aaa
 const Stack = createNativeStackNavigator();
 
 export default function App() {
   return (
-    <NavigationContainer>
+    <NavigationContainer linking={linking}>
       <Stack.Navigator>
         <Stack.Screen
           name="Home"
@@ -61,6 +63,12 @@ export default function App() {
         <Stack.Screen
           name="Order"
           component={Order}
+          options={{
+            header: () => <Header></Header>,
+          }}></Stack.Screen>
+        <Stack.Screen
+          name="Details"
+          component={Details}
           options={{
             header: () => <Header></Header>,
           }}></Stack.Screen>

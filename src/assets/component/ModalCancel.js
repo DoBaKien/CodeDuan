@@ -1,12 +1,5 @@
 import {useState} from 'react';
-import {
-  Pressable,
-  Text,
-  View,
-  StyleSheet,
-  TextInput,
-  Dimensions,
-} from 'react-native';
+import {Pressable, Text, View, StyleSheet, TextInput} from 'react-native';
 import {Keyboard} from 'react-native';
 
 function ModalCancel() {
@@ -22,7 +15,7 @@ function ModalCancel() {
       <View style={styles.modalView}>
         <TextInput
           style={styles.input}
-          placeholder="Nhập ghi chú khi sửa điện.."
+          placeholder="Nhập lý do từ chối.."
           onEndEditing={handleClick}
           onChangeText={value => setGhiChu(value)}
           placeholderTextColor="gray"

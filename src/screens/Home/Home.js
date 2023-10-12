@@ -2,31 +2,38 @@ import {StyleSheet, Text, TouchableOpacity, View} from 'react-native';
 import React, {useEffect} from 'react';
 import {
   NotificationService,
-  onDisplayNotification,
   requestUserPermission,
 } from '../../assets/component/NotiHelper';
-import {io} from 'socket.io-client';
+import axios from 'axios';
 
 export default function Home({navigation}) {
-  const socket = io.connect('http://10.170.232.98:3002/');
   useEffect(() => {
     requestUserPermission();
     NotificationService();
   }, []);
 
-  socket.emit('join_room', '1');
-  useEffect(() => {
-    socket.on('new-notification', data => {
-      onDisplayNotification(data);
-    });
-  }, [socket]);
+  const postNotification = () => {
+    axios
+      .post('http://10.170.215.9:3000/api/send', {
+        title: 'title',
+        body: 'body',
+        token:
+          'dsl0p9VTR6yNWv83vKJPEK:APA91bGDcjlmet7CEmeb7IwEjRBDhuMPHUI8xVT0uk-qXYylKeRvXhHsCdj61PlgkahMTAxSziNagCYAN1daybrFV2_G2-QCT6MilmGz51EAJqGT3k-0WGeVCzkL0HY0XWoukEwxFACj',
+        data: {
+          screen: 'order',
+        },
+      })
+      .then(function (response) {
+        // console.log(response);
+      })
+      .catch(function (error) {
+        console.log(error);
+      });
+  };
+
   return (
     <View style={styles.container}>
-      <TouchableOpacity
-        style={styles.btn}
-        onPress={() => {
-          onDisplayNotification({title: 'thông báo', body: 'đã dc phân công'});
-        }}>
+      <TouchableOpacity style={styles.btn} onPress={() => postNotification()}>
         <Text style={styles.appButtonText}>Thông báo</Text>
       </TouchableOpacity>
       <TouchableOpacity

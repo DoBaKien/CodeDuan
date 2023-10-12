@@ -7,7 +7,9 @@ const Task = props => {
     <View style={styles.item}>
       <Text style={styles.itemTextId}>{props.data.id}</Text>
       <Text style={styles.itemTextName}>{props.data.name}</Text>
-      <Text style={styles.itemTextStt}>{props.data.trangThai}</Text>
+      <Text style={styles.itemTextStt}>
+        {props.data.trangThai || props.data.PhanCong || 'Không có'}
+      </Text>
     </View>
   );
 };

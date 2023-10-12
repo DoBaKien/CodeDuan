@@ -75,59 +75,6 @@ function Map() {
     );
   };
 
-  const ad = () => {
-    return (
-      <View>
-        <Text style={{color: 'black'}}>KH: {item.teN_KHANG}</Text>
-        <Text style={{color: 'black'}}>ĐC: {item.sO_NHA + item.duonG_PHO}</Text>
-        <Text style={{color: 'black'}}>Số No: {item.sO_TBI}</Text>
-        <Text style={{color: 'black'}}>Danh số: {item.doanH_SO}</Text>
-        <Text style={{color: 'black'}}>Mã KH: {item.mA_KHANG}</Text>
-        <Text style={{color: 'black'}}>Vị trí treo: {item.vtrI_TREO}</Text>
-        <Text style={{color: 'black'}}>
-          Tọa độ: (lng: '{item.toA_DO.longitude}',lat:'{item.toA_DO.latitude}')
-        </Text>
-        {item.dieN_TTHU !== null
-          ? item.dieN_TTHU.map(i => {
-              return (
-                <Text style={{color: 'black'}}>
-                  Tháng {i.thang}/{i.nam}: {i.dieN_TTHU} (kWh)
-                </Text>
-              );
-            })
-          : null}
-        <Text style={{color: 'black'}}>Áp giá: {item.chuoI_GIA}</Text>
-        <Text style={{color: 'black'}}>Mã sổ ghi điện {item.mA_SOGCS}</Text>
-        <Text style={{color: 'black'}}>
-          Điện thoại liên hệ: {item.dieN_THOAI}
-        </Text>
-        <Text style={{color: 'black'}}>
-          Chủng loại công tơ: {item.loaI_CTO}
-        </Text>
-        <Text style={{color: 'black'}}>Số hộ: {item.sO_HO}</Text>
-        {item.chI_SO_MOI !== null &&
-        item.chI_SO_MOI !== undefined &&
-        item.chI_SO_MOI.length !== 0 ? (
-          <>
-            <Text style={{color: 'black'}}>Kỳ: {item.chI_SO_MOI[0].ky}</Text>
-            <Text style={{color: 'black'}}>
-              Tháng: {item.chI_SO_MOI[0].thang}/{item.chI_SO_MOI[0].nam}{' '}
-            </Text>
-            <Text style={{color: 'black'}}>
-              Bộ chỉ số: {item.chI_SO_MOI[0].bcs}
-            </Text>
-            <Text style={{color: 'black'}}>
-              Ngày ghi điện: {item.chI_SO_MOI[0].ngaY_GHIDIEN}
-            </Text>
-            <Text style={{fontWeight: 'bold'}}>
-              Chỉ số mới: {item.chI_SO_MOI[0].chisO_MOI}{' '}
-            </Text>
-          </>
-        ) : null}
-      </View>
-    );
-  };
-
   const MyCustomMarkerViewKH = () => {
     return (
       <View style={{alignItems: 'center', width: 180}}>
