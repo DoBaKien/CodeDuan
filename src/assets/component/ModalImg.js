@@ -39,6 +39,7 @@ export const ModalImg = ({visible, setVisible, type, imagesT, imagesS}) => {
       .catch(error => {
         console.log('error');
       });
+
     setVisible(false);
   };
 

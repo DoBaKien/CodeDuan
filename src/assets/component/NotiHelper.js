@@ -103,18 +103,6 @@ export async function onDisplayNotification(data, screen) {
     },
   });
 
-  // notifee.onBackgroundEvent(async ({type, detail}) => {
-  //   const {notification, pressAction} = detail;
-  //   // Check if the user pressed the "Mark as read" action
-  //   if (type === EventType.ACTION_PRESS && pressAction.id === 'accept') {
-  //     console.log('accept bg');
-  //     await notifee.cancelNotification(notification.id);
-  //   } else if (type === EventType.ACTION_PRESS && pressAction.id === 'ingore') {
-  //     console.log('ingore bg');
-  //     await notifee.cancelNotification(notification.id);
-  //   }
-  // });
-
   notifee.onForegroundEvent(async ({type, detail}) => {
     if (detail.pressAction?.id !== undefined) {
       await notifee.cancelNotification(detail.notification.id);

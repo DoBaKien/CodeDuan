@@ -1,5 +1,11 @@
 import React, {useState} from 'react';
-import {View, Text, StyleSheet, TouchableOpacity} from 'react-native';
+import {
+  View,
+  Text,
+  StyleSheet,
+  TouchableOpacity,
+  PermissionsAndroid,
+} from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome5';
 import ModalDetail from '../../assets/component/ModalDetail';
 
@@ -61,7 +67,11 @@ const Details = ({navigation}) => {
         <View style={styles.nav}>
           <TouchableOpacity
             style={[styles.button, styles.btn]}
-            onPress={() => navigation.navigate('Map')}>
+            onPress={() =>
+              navigation.navigate('Map', {
+                data: 'asd',
+              })
+            }>
             <Icon name="map-marked-alt" size={30} color="#fff" />
             <Text style={styles.textStyle}>Mở bản đồ</Text>
           </TouchableOpacity>

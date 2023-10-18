@@ -14,7 +14,7 @@ function Map() {
   const [KH, setKH] = useState('');
 
   useEffect(() => {
-    _getLocationPermission();
+    Geolocation.getCurrentPosition(info => setCurrentLocation(info.coords));
 
     axios
       .get(
@@ -139,27 +139,6 @@ function Map() {
     return <Text style={{color: 'red'}}>{a} (m)</Text>;
   };
 
-  async function _getLocationPermission() {
-    try {
-      const granted = await PermissionsAndroid.request(
-        PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION,
-        {
-          title: 'Example App',
-          message: 'Example App access to your location ',
-        },
-      );
-      if (granted === PermissionsAndroid.RESULTS.GRANTED) {
-        Geolocation.getCurrentPosition(info => setCurrentLocation(info.coords));
-        console.log('You can use the location');
-      } else {
-        console.log('location permission denied');
-        alert('Location permission denied');
-      }
-    } catch (err) {
-      console.warn(err);
-    }
-  }
-
   return (
     <View style={styles.container}>
       <View style={styles.map}>
@@ -177,14 +156,13 @@ function Map() {
               region={{
                 longitude: parseFloat(KH.toA_DO.longitude),
                 latitude: parseFloat(KH.toA_DO.latitude),
-
                 latitudeDelta: 0.01,
                 longitudeDelta: 0.01,
               }}>
               <Marker
                 coordinate={{
-                  latitude: currentLocation.latitude,
-                  longitude: currentLocation.longitude,
+                  latitude: 11.5780472,
+                  longitude: 106.7940244,
                 }}>
                 <MyCustomMarkerView />
               </Marker>

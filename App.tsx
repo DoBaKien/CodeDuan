@@ -11,9 +11,9 @@ import RealmEx from './src/screens/Realm/Realm';
 import Order from './src/screens/Order/Order';
 import linking from './linking';
 import Details from './src/screens/Details/Details';
+import BackgroundService from 'react-native-background-actions';
 // tất cả câu trả lời keystore là aaa
 const Stack = createNativeStackNavigator();
-
 export default function App() {
   return (
     <NavigationContainer linking={linking}>
