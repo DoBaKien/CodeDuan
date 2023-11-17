@@ -6,9 +6,12 @@ import {
   View,
   Alert,
   TouchableOpacity,
+  Pressable,
 } from 'react-native';
 import Realm from 'realm';
+import uuid from 'react-native-uuid';
 
+import React, {useEffect} from 'react';
 function RealmEx() {
   const [name, setName] = useState('');
   const [age, setAge] = useState('');
@@ -17,23 +20,27 @@ function RealmEx() {
   const PersonSchema = {
     name: 'Person',
     properties: {
-      id: 'int',
+      id: 'string',
       name: 'string',
       age: 'string',
     },
     primaryKey: 'id',
   };
 
+  useEffect(() => {
+    getAllPeople();
+  }, []);
+
   // Mở hoặc tạo một Realm database
   const getRealm = async () =>
-    await Realm.open({path: 'myrealm', schema: [PersonSchema]});
+    await Realm.open({path: 'myrealmasd', schema: [PersonSchema]});
 
   // Thêm một người mới vào danh bạ
   const createPerson = async (name, age) => {
     const realm = await getRealm();
     try {
       realm.write(() => {
-        const id = realm.objects('Person').length + 1;
+        const id = uuid.v4();
         realm.create('Person', {id, name, age});
       });
       Alert.alert('thanh cong', 'Them thanh cong');
@@ -51,17 +58,21 @@ function RealmEx() {
   };
 
   // Cập nhật thông tin của người trong danh bạ
-  const updatePerson = async (id, newName, newAge) => {
+  const updatePerson = async (oldName, newName, newAge) => {
     const realm = await getRealm();
     try {
-      const person = realm.objectForPrimaryKey('Person', id);
-      realm.write(() => {
-        person.name = newName;
-        person.age = newAge;
-      });
-      getAllPeople();
-      Alert.alert('thanh cong', 'cap nhat thanh cong');
-      console.log('done');
+      const person = realm.objects('Person').filtered('name == $0', oldName)[0];
+
+      if (person) {
+        realm.write(() => {
+          person.name = newName;
+          person.age = newAge;
+        });
+        getAllPeople();
+        Alert.alert('Thành công', 'Cập nhật thành công');
+      } else {
+        Alert.alert('Lỗi', 'Không tìm thấy người có tên ' + oldName);
+      }
     } catch (e) {
       console.log(e);
     }
@@ -71,6 +82,7 @@ function RealmEx() {
   const deletePerson = async id => {
     const realm = await getRealm();
     const person = realm.objectForPrimaryKey('Person', id);
+
     realm.write(() => {
       realm.delete(person);
     });
@@ -81,9 +93,13 @@ function RealmEx() {
 
   const deleteAll = async () => {
     const realm = await getRealm();
+
     realm.write(() => {
-      realm.delete(person);
+      const allPersons = realm.objects('Person');
+      realm.delete(allPersons);
     });
+    Alert.alert('thanh cong', 'Xóa thanh cong');
+    getAllPeople();
   };
 
   return (
@@ -92,8 +108,7 @@ function RealmEx() {
         onChangeText={setId}
         value={id}
         style={styles.input}
-        keyboardType="numeric"
-        placeholder="id"
+        placeholder="Tên cũ"
         placeholderTextColor="gray"
       />
       <TextInput
@@ -111,34 +126,46 @@ function RealmEx() {
         placeholder="age"
         placeholderTextColor="gray"
       />
-      <View style={{gap: 10}}>
+      <View style={{gap: 10, flexDirection: 'row'}}>
         <TouchableOpacity
           style={styles.btn}
           onPress={() => createPerson(name, age)}>
           <Text style={styles.appButtonText}>create</Text>
         </TouchableOpacity>
 
-        <TouchableOpacity style={styles.btn} onPress={() => getAllPeople()}>
+        {/* <TouchableOpacity style={styles.btn} onPress={() => getAllPeople()}>
           <Text style={styles.appButtonText}>read</Text>
-        </TouchableOpacity>
+        </TouchableOpacity> */}
 
         <TouchableOpacity
           style={styles.btn}
-          onPress={() => updatePerson(parseInt(id), name, age)}>
+          onPress={() => updatePerson(id, name, age)}>
           <Text style={styles.appButtonText}>update</Text>
         </TouchableOpacity>
 
-        <TouchableOpacity
-          style={styles.btn}
-          onPress={() => deletePerson(parseInt(id))}>
+        {/* <TouchableOpacity style={styles.btn} onPress={() => deletePerson(id)}>
           <Text style={styles.appButtonText}>delete</Text>
-        </TouchableOpacity>
+        </TouchableOpacity> */}
         <TouchableOpacity style={styles.btn} onPress={() => deleteAll()}>
           <Text style={styles.appButtonText}>delete All</Text>
         </TouchableOpacity>
       </View>
       <View style={{marginTop: 20, alignItems: 'center'}}>
         <Text style={{fontSize: 30, color: 'black'}}>Bảng dữ liệu</Text>
+        <View
+          style={{
+            flexDirection: 'row',
+            marginTop: 10,
+            width: '100%',
+            display: 'flex',
+            borderBottomWidth: 1,
+            justifyContent: 'space-around',
+          }}>
+          <Text style={{fontSize: 20, color: 'black', width: 100}}>Name</Text>
+          <Text style={{fontSize: 20, color: 'black', width: 100}}>Tuoi</Text>
+          <Text style={{fontSize: 20, color: 'black', width: 100}}>Action</Text>
+        </View>
+
         {list.map(laa => {
           return (
             <View
@@ -148,12 +175,20 @@ function RealmEx() {
                 marginTop: 10,
                 width: '100%',
                 display: 'flex',
-
                 justifyContent: 'space-around',
+                borderBottomWidth: 1,
               }}>
-              <Text style={{fontSize: 20, color: 'black'}}>{laa.id}</Text>
-              <Text style={{fontSize: 20, color: 'black'}}>{laa.name}</Text>
-              <Text style={{fontSize: 20, color: 'black'}}>{laa.age}</Text>
+              <Text style={{fontSize: 20, color: 'black', width: 100}}>
+                {laa.name}
+              </Text>
+              <Text style={{fontSize: 20, color: 'black', width: 100}}>
+                {laa.age}
+              </Text>
+              <TouchableOpacity
+                style={{width: 100}}
+                onPress={() => deletePerson(laa.id)}>
+                <Text style={{fontSize: 20, color: 'black'}}>Xóa</Text>
+              </TouchableOpacity>
             </View>
           );
         })}
@@ -173,8 +208,9 @@ const styles = StyleSheet.create({
     elevation: 8,
     backgroundColor: '#009688',
     borderRadius: 10,
-    paddingVertical: 10,
-    paddingHorizontal: 12,
+    paddingVertical: 5,
+    paddingHorizontal: 5,
+    flex: 1,
   },
   appButtonText: {
     fontSize: 18,

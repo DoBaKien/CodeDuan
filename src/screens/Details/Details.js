@@ -24,8 +24,12 @@ const Details = ({navigation}) => {
         type={type}
       />
       <View style={styles.header}>
-        <Text style={styles.textHeader}>YC001</Text>
+        <Text style={styles.boxHeader}>
+          <Text style={{fontSize: 20, color: 'black'}}>Mã yêu cầu: </Text>
+          <Text style={styles.textHeader}> YC001</Text>
+        </Text>
       </View>
+      <Text style={styles.textHeader}>Thông tin khách hàng</Text>
       <View style={styles.body}>
         <Text style={styles.textbody}>
           Mã khách hàng: 87b27689-9b5b-591c-a360
@@ -33,35 +37,13 @@ const Details = ({navigation}) => {
         <Text style={styles.textbody}>Tên khách hàng: Verna Lynch</Text>
         <Text style={styles.textbody}>Địa chỉ: Congo - Brazzaville </Text>
         <Text style={styles.textbody}>Mã điểm đo: 87b27689-9b5b-591c </Text>
+      </View>
+      <Text style={[styles.textHeader, {marginTop: 20}]}>Thông tin đơn</Text>
+      <View style={styles.body}>
+        <Text style={styles.textbody}>Mã đơn: YC001</Text>
+
         <Text style={styles.textbody}>Người phân công: Jean Arnold</Text>
         <Text style={styles.textbody}>Ngày phân công: 05/10/2023</Text>
-      </View>
-      <View style={styles.nav}>
-        <TouchableOpacity
-          style={[styles.button, {backgroundColor: '#FF1A00'}]}
-          onPress={() => {
-            setModalVisible(true);
-            setType('huy');
-          }}>
-          <Text style={styles.textStyle}>Từ chối yêu cầu</Text>
-        </TouchableOpacity>
-        {!show ? (
-          <TouchableOpacity
-            style={[styles.button, {backgroundColor: '#1A00FF'}]}
-            onPress={handleClick}>
-            <Text style={styles.textStyle}>Chấp nhận yêu cầu</Text>
-          </TouchableOpacity>
-        ) : null}
-        {show ? (
-          <TouchableOpacity
-            style={[styles.button, {backgroundColor: '#26d979'}]}
-            onPress={() => {
-              setModalVisible(true);
-              setType('done');
-            }}>
-            <Text style={styles.textStyle}>Hoàn thành yêu cầu</Text>
-          </TouchableOpacity>
-        ) : null}
       </View>
       {show ? (
         <View style={styles.nav}>
@@ -77,6 +59,33 @@ const Details = ({navigation}) => {
           </TouchableOpacity>
         </View>
       ) : null}
+      <View style={styles.nav}>
+        <TouchableOpacity
+          style={[styles.button, {backgroundColor: '#d92686'}]}
+          onPress={() => {
+            setModalVisible(true);
+            setType('huy');
+          }}>
+          <Text style={styles.textStyle}>Từ chối yêu cầu</Text>
+        </TouchableOpacity>
+        {!show ? (
+          <TouchableOpacity
+            style={[styles.button, {backgroundColor: '#262cd9'}]}
+            onPress={handleClick}>
+            <Text style={styles.textStyle}>Chấp nhận yêu cầu</Text>
+          </TouchableOpacity>
+        ) : null}
+        {show ? (
+          <TouchableOpacity
+            style={[styles.button, {backgroundColor: '#26d979'}]}
+            onPress={() => {
+              setModalVisible(true);
+              setType('done');
+            }}>
+            <Text style={styles.textStyle}>Hoàn thành yêu cầu</Text>
+          </TouchableOpacity>
+        ) : null}
+      </View>
     </View>
   );
 };
@@ -86,21 +95,31 @@ export default Details;
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    alignItems: 'center',
   },
   header: {
-    width: '100%',
     marginVertical: 20,
-    marginTop: 50,
+  },
+  boxHeader: {
+    textAlign: 'center',
+    width: 300,
+    backgroundColor: '#b5e1a4',
+    padding: 20,
+    borderRadius: 20,
   },
   textHeader: {
-    fontSize: 30,
+    fontSize: 20,
     color: 'black',
     fontWeight: 'bold',
-    textAlign: 'center',
   },
   body: {
     gap: 10,
     marginHorizontal: 20,
+    backgroundColor: '#ecdaf3',
+    borderRadius: 20,
+    padding: 20,
+    marginTop: 5,
+    width: '90%',
   },
   textbody: {
     fontSize: 16,
@@ -110,6 +129,7 @@ const styles = StyleSheet.create({
     marginTop: 30,
     flexDirection: 'row',
     justifyContent: 'space-around',
+    gap: 20,
   },
   button: {
     borderRadius: 10,
@@ -123,7 +143,7 @@ const styles = StyleSheet.create({
     marginHorizontal: 20,
   },
   btn: {
-    backgroundColor: '#26d979',
+    backgroundColor: '#d97926',
     flexDirection: 'row',
     alignItems: 'center',
     paddingHorizontal: 20,

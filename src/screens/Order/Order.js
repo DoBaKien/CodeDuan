@@ -87,13 +87,16 @@ export const styles = StyleSheet.create({
   itemTextId: {
     width: 70,
     fontSize: 16,
+    color: 'black',
   },
   itemTextName: {
     flex: 2,
     fontSize: 16,
+    color: 'black',
   },
   itemTextStt: {
     flex: 1,
     textAlign: 'center',
+    color: 'black',
   },
 });
