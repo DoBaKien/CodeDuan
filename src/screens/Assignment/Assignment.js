@@ -7,7 +7,7 @@ import {
   Alert,
   ScrollView,
 } from 'react-native';
-import Footer from '../../assets/component/Footer';
+
 import {dataPc} from '../../assets/component/data';
 import Task from '../../assets/component/Task';
 import ModalPc from '../../assets/component/ModalPc';
@@ -15,7 +15,9 @@ import {useState} from 'react';
 
 const Assignment = () => {
   const [modalVisible, setModalVisible] = useState(false);
-
+  const hadPc = () => {
+    setModalVisible(true);
+  };
   return (
     <View style={styles.container}>
       <ModalPc setModalVisible={setModalVisible} modalVisible={modalVisible} />
@@ -32,11 +34,7 @@ const Assignment = () => {
             </View>
             {dataPc.map((item, index) => {
               return (
-                <TouchableOpacity
-                  key={index}
-                  onPress={() => {
-                    setModalVisible(true);
-                  }}>
+                <TouchableOpacity key={index} onPress={hadPc}>
                   <Task data={item} />
                 </TouchableOpacity>
               );

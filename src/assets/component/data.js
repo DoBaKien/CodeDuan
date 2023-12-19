@@ -29,7 +29,7 @@ export const dataPc = [
   {
     id: 'YC001',
     name: 'Elva Cruz',
-    PhanCong: 'Barry Garrett',
+    PhanCong: '',
     GoiY: [
       {
         id: 'YC002',

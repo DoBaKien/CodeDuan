@@ -98,7 +98,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   header: {
-    marginVertical: 20,
+    marginVertical: 30,
   },
   boxHeader: {
     textAlign: 'center',
